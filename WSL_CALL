@@ -1,0 +1,16 @@
+    python3 main.py run \
+            --payment-addr addr1v94509vm3rrtmedw4dehc2yu8d2ph5wph8qey3m04yv8gesdrxstt \
+            --payment-sign-key /Cardano/payment.skey \
+            --profit-addr $address \
+            --mint-price 5000000  \
+            --mint-script Cardano/Test_NFT/policy/policy.script \
+            --mint-sign-key Cardano/Test_NFT/policy/policy.skey \
+            --mint-policy 06f67b0419eefd0e87f8ed5390c1a251e45424306ac3acd6f90461a4 \
+            --blockfrost-project $BF_ID \
+            --metadata-dir Cardano/metadata.json \
+            --output-dir Cardano/Test_NFT \
+            --single-vend-max 2 \
+            --vend-randomly \
+            --no-whitelist \
+            --donation 1400000
+            --mainnet

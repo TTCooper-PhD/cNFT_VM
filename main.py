@@ -112,7 +112,7 @@ def get_parser():
     parser.add_argument('--payment-sign-key', required=True, help='Location on disk of wallet signing keys for payment landing zone')
     parser.add_argument('--profit-addr', required=True, help='Cardano address where mint profits should be taken (NOTE: HARDWARE/LEDGER RECOMMENDED)')
     parser.add_argument('--mint-policy', required=True, help='Policy ID of the mint being performed')
-    parser.add_argument('--mint-script', required=True, help='Local path of scripting file for mint')
+    parser.add_argument('--mint-script-file', required=True, help='Local path of scripting file for mint')
     parser.add_argument('--mint-sign-key', required=True, help='Location on disk of signing keys used for the mint')
     parser.add_argument('--metadata-dir', required=True, help='Local folder where Cardano NFT metadata (e.g., 721s) are stored')
     parser.add_argument('--output-dir', required=True, help='Local folder where vending machine output stored')
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     _mint_price = get_mint_price(_args.mint_price, _args.free_mint)
     _donation_amt = get_donation_amt(_args.donation, _args.free_mint)
     _whitelist = get_whitelist_type(_args, os.path.join(_args.output_dir, WL_CONSUMED_DIR_SUBDIR))
-    _mint = Mint(_args.mint_policy, _mint_price, _donation_amt, _args.metadata_dir, _args.mint_script, _args.mint_sign_key, _whitelist)
+    _mint = Mint(_args.mint_policy, _mint_price, _donation_amt, _args.metadata_dir, _args.mint_script_file, _args.mint_sign_key, _whitelist)
 
     _blockfrost_api = BlockfrostApi(_args.blockfrost_project, mainnet=_args.mainnet, preview=_args.preview)
 

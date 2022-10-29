@@ -14,7 +14,7 @@ export SET_YOUR_SINGLE_VEND_MAX="UPDATED_SINGLE_VEND_MAXIMUM"
 export SET_YOUR_METADATA_DIRECTORY="UPDATED/METADATA/DIRECTORY/PATH"
 
 # Use this flag to switch between legacy testnet, preprod, and preview envs
-export NETWORK_MAGIC=
+export NETWORK_MAGIC=legacy testnet
 
 # Make the directory where vending machine backend and frontend code will be
 mkdir sample_run/
@@ -29,7 +29,7 @@ cardano-cli address key-gen \
 cardano-cli address build \
   --payment-verification-key-file keys/vending_machine.vkey \
   --out-file keys/vending_machine.addr \
-  --testnet-magic $NETWORK_MAGIC
+  --testnet-magic $BF_ID
 cardano-cli address key-gen \
   --verification-key-file keys/profit_vault.vkey \
   --signing-key-file keys/profit_vault.skey
@@ -50,7 +50,7 @@ cat <<EOF > policies/nftpolicy.script
   [
    {
      "type": "before",
-     "slot": $SET_YOUR_POLICY_EXPIRATION_HERE
+     "slot": 75077570
    },
    {
      "type": "sig",
@@ -84,16 +84,16 @@ venv/bin/python3 cardano-nft-vending-machine/scripts/initialize_asset_wl.py \
 cp $SET_YOUR_METADATA_DIRECTORY/* metadata_staging/
 
 # FIRST: Validate your configuration to determine any metadata errors
-venv/bin/python3 cardano-nft-vending-machine/main.py validate \
-  --payment-addr $(cat keys/vending_machine.addr) \
+ python3 cardano-nft-vending-machine/main.py validate \
+  --payment-addr keys/vending_machine.addr \
   --payment-sign-key keys/vending_machine.skey \
-  --profit-addr $(cat keys/profit_vault.addr) \
+  --profit-addr keys/profit_vault.addr \
   --mint-price $SET_YOUR_MINT_PRICE \
   --mint-script policies/nftpolicy.script \
   --mint-sign-key policies/nftpolicy.skey \
   --mint-policy $(cat policies/nftpolicyID) \
-  --blockfrost-project $SET_YOUR_BLOCKFROST_PROJ_HERE \
-  --metadata-dir metadata_staging/ \
+  --blockfrost-project $BF_ID \
+  --metadata-dir  metadata_staging/ \
   --output-dir output \
   --single-vend-max $SET_YOUR_SINGLE_VEND_MAX \
   --vend-randomly \
@@ -103,14 +103,14 @@ venv/bin/python3 cardano-nft-vending-machine/main.py validate \
 # NOTE: We recommend running this before copying any metadata over to ensure
 #       that if your address leaked there are no mints before the drop is live
 venv/bin/python3 cardano-nft-vending-machine/main.py run \
-  --payment-addr $(cat keys/vending_machine.addr) \
+  --payment-addr keys/vending_machine.addr \
   --payment-sign-key keys/vending_machine.skey \
-  --profit-addr $(cat keys/profit_vault.addr) \
+  --profit-addr keys/profit_vault.addr \
   --mint-price $SET_YOUR_MINT_PRICE \
   --mint-script policies/nftpolicy.script \
   --mint-sign-key policies/nftpolicy.skey \
   --mint-policy $(cat policies/nftpolicyID) \
-  --blockfrost-project $SET_YOUR_BLOCKFROST_PROJ_HERE \
+  --blockfrost-project $BF_ID \
   --metadata-dir metadata/ \
   --output-dir output \
   --single-vend-max $SET_YOUR_SINGLE_VEND_MAX \
